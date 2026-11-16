@@ -129,8 +129,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
 EMAIL_PORT = 2525
-EMAIL_HOST_USER = '3d76e1afba9b10'      # ← copie depuis Mailtrap
-EMAIL_HOST_PASSWORD = '1b98cc8d7f3505'  # ← copie depuis Mailtrap
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'noreply@medicamarket.tn'
 
