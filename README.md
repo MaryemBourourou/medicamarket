@@ -1,413 +1,140 @@
-# 🏥 MedicaMarket 
+# MedicaMarket
 
-> **Branche** : `dev2/ecommerce`
-> **Basée sur** : `dev1/auth-users` (Dev 1 — Eya)
-> **Repo** : https://github.com/Eyablg-ops/medicamarket
+A medical e-commerce platform where individual clients and clinics can buy pharmaceutical products online, with stock and expiry-date management, simulated OTP payment, PDF invoices, role-based dashboards and AI features.
 
----
+> Academic team project (2026).
 
-## 👥 Équipe
+## Team
 
-| Dev | Branche | Responsabilité |
-|-----|---------|----------------|
-| **Dev 1 (Eya)** | `dev1/auth-users` | Auth, Utilisateurs, Rôles, Permissions |
-| **Dev 2 (Marye)** | `dev2/ecommerce` | E-commerce, Produits, Panier, Commandes, Paiement |
-| **Dev 3(Asma)** | `dev3/ai-ux` | IA, Chatbot, Recommandations |
+| Developer | Branch | Scope |
+|---|---|---|
+| Eya ([@Eyablg-ops](https://github.com/Eyablg-ops)) | `dev1/auth-users` | Authentication, users, roles, permissions |
+| Maryem Bourourou | `dev2/ecommerce` | E-commerce: products, cart, orders, payment |
+| Asma Letaief | `dev3/ai` | AI, chatbot, recommendations |
 
----
+The original team repository is [Eyablg-ops/medicamarket](https://github.com/Eyablg-ops/medicamarket).
 
-## 🆕 Nouveautés Partie 2 (par rapport à la Partie 1)
+## Features
 
-### Backend — Nouvelles apps
+**E-commerce**
+- Product catalogue with categories, filters and search
+- Expiry dates with visual alerts (expiring soon / expired)
+- Stock management with automatic decrement
+- Shopping cart (add, change quantity, remove)
+- Checkout with address and a simulated 3-step OTP payment
+- Order history with statuses and PDF invoice download
+- Order confirmation emails (tested with Mailtrap)
 
-| App | Description |
-|-----|-------------|
-| `products/` | Produits, Catégories, Stock, Dates expiration |
-| `orders/` | Panier, Commandes, Emails |
-| `payments/` | Paiement OTP simulé, Factures PDF |
+**Dashboards**
+- *Client*: order summary, total spent, purchase history, recommendations
+- *Clinic*: product and order statistics, top-selling products, stock and expiry alerts, product and category management with image upload
+- *Admin*: KPIs, monthly sales chart, user list with search, top products
 
-### Frontend — Nouvelles pages
+**Roles**
 
-| Page | URL | Description |
-|------|-----|-------------|
-| Boutique | `/shop` | Liste produits + filtres + recherche |
-| Détail produit | `/shop/:slug` | Fiche produit + ajouter au panier |
-| Panier | `/cart` | Modifier quantités, supprimer |
-| Checkout | `/checkout` | Adresse + paiement OTP 3 étapes |
-| Commandes | `/orders` | Historique + télécharger facture PDF |
-| Dashboard Client | `/dashboard` | Stats, commandes, recommandations |
-| Dashboard Clinique | `/clinique/dashboard` | Stats, alertes, top produits |
-| Dashboard Admin | `/admin/dashboard` | KPIs, graphiques, utilisateurs |
-| Gestion Produits | `/clinique/products` | CRUD produits avec images |
-| Gestion Catégories | `/clinique/categories` | CRUD catégories |
+| Role | Access |
+|---|---|
+| `client` | Shop, cart, orders, client dashboard |
+| `clinique` | Everything a client can do, plus clinic dashboard and product / category management |
+| `admin` | Everything, plus admin dashboard and the Django admin interface |
 
----
+## Tech stack
 
-## 🛠️ Stack Technique & Versions
+| Layer | Technologies |
+|---|---|
+| Backend | Python 3.11+, Django 4.2.7, Django REST Framework 3.14.0, SimpleJWT 5.3.0, django-cors-headers, django-filter, Pillow, ReportLab |
+| Frontend | React 18, Vite, Tailwind CSS 3.4.0, React Router, Axios, Recharts |
+| Database | MySQL / MariaDB 10.4 (via XAMPP) |
+| AI | Ollama (configurable provider and model) |
 
-### Backend
-| Package | Version |
-|---------|---------|
-| Python | 3.11+ |
-| Django | **4.2.7** ⚠️ (ne pas upgrader — incompatible MariaDB 10.4) |
-| djangorestframework | 3.14.0 |
-| djangorestframework-simplejwt | 5.3.0 |
-| django-cors-headers | 4.3.0 |
-| django-filter | 23.3 |
-| mysqlclient | 2.2.8 |
-| Pillow | latest |
-| reportlab | latest |
-
-### Frontend
-| Package | Version |
-|---------|---------|
-| React | 18+ |
-| Vite | 8.0.8 |
-| **Tailwind CSS** | **3.4.0** ⚠️ (ne pas upgrader vers v4) |
-| React Router DOM | latest |
-| Axios | latest |
-| Recharts | latest |
-
-### Base de données
-| Outil | Version |
-|-------|---------|
-| MariaDB | **10.4.32** (via XAMPP) |
-| XAMPP | latest |
-
----
-
-## ⚙️ Installation complète
-
-### Prérequis
-- Python 3.11+
-- Node.js 18+
-- XAMPP avec MySQL démarré
-
-### 1️⃣ Cloner le projet
-
-```bash
-git clone https://github.com/Eyablg-ops/medicamarket.git
-cd medicamarket
-```
-
-### 2️⃣ Basculer sur la branche Dev 2
-
-```bash
-git checkout dev2/ecommerce
-```
-
-### 3️⃣ Base de données — XAMPP
-
-1. Lancer **XAMPP** → démarrer **Apache** + **MySQL**
-2. Aller sur **http://localhost/phpmyadmin**
-3. Créer la base : `medicamarket_db`
-
-### 4️⃣ Backend Django
-
-```bash
-# Créer l'environnement virtuel
-python -m venv venv
-
-# Activer (Windows)
-venv\Scripts\activate
-
-# Activer (Mac/Linux)
-source venv/bin/activate
-
-# Installer les dépendances exactes
-pip install django==4.2.7 djangorestframework==3.14.0 djangorestframework-simplejwt==5.3.0 django-cors-headers==4.3.0 django-filter==23.3 mysqlclient Pillow reportlab
-
-# Migrations
-python manage.py makemigrations
-python manage.py migrate
-
-# Créer un superuser admin
-python manage.py createsuperuser
-
-# Lancer le serveur
-python manage.py runserver
-```
-
-### 5️⃣ Frontend React
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### 6️⃣ Configuration Email Mailtrap (optionnel)
-
-Dans `config/settings.py` :
-
-```python
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-EMAIL_PORT = 2525
-EMAIL_HOST_USER = 'ton_username_mailtrap'
-EMAIL_HOST_PASSWORD = 'ton_password_mailtrap'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'noreply@medicamarket.tn'
-```
-
----
-
-## 🔑 Configuration `settings.py`
-
-```python
-# Base de données XAMPP — MariaDB 10.4
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'medicamarket_db',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'OPTIONS': {
-            'sql_mode': 'STRICT_TRANS_TABLES',
-        },
-    }
-}
-
-# Médias
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Cache (OTP paiement)
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    }
-}
-```
-
----
-
-## 🌐 URLs Importantes
-
-### Backend API
-| URL | Description |
-|-----|-------------|
-| http://localhost:8000/admin | Interface Admin Django |
-| http://localhost:8000/api/users/ | Auth (Dev 1) |
-| http://localhost:8000/api/products/ | Produits |
-| http://localhost:8000/api/products/categories/ | Catégories |
-| http://localhost:8000/api/orders/cart/ | Panier |
-| http://localhost:8000/api/orders/checkout/ | Créer commande |
-| http://localhost:8000/api/orders/ | Liste commandes |
-| http://localhost:8000/api/payments/initiate/ | Initier paiement OTP |
-| http://localhost:8000/api/payments/verify-otp/ | Vérifier OTP |
-| http://localhost:8000/api/payments/invoice/:id/ | Télécharger facture PDF |
-| http://localhost:8000/api/orders/admin/stats/ | Stats admin |
-| http://localhost:8000/api/products/clinic/products/ | Produits clinique |
-| http://localhost:8000/api/products/clinic/categories/ | Catégories clinique |
-
-### Frontend
-| URL | Page |
-|-----|------|
-| http://localhost:5173 | Accueil |
-| http://localhost:5173/shop | Boutique |
-| http://localhost:5173/shop/:slug | Détail produit |
-| http://localhost:5173/cart | Panier |
-| http://localhost:5173/checkout | Paiement |
-| http://localhost:5173/orders | Commandes |
-| http://localhost:5173/dashboard | Dashboard Client |
-| http://localhost:5173/clinique/dashboard | Dashboard Clinique |
-| http://localhost:5173/clinique/products | Gestion Produits |
-| http://localhost:5173/clinique/categories | Gestion Catégories |
-| http://localhost:5173/admin/dashboard | Dashboard Admin |
-
----
-
-## 👤 Rôles & Accès
-
-| Rôle | Accès |
-|------|-------|
-| `client` | Boutique, Panier, Commandes, Dashboard client |
-| `clinique` | Tout client + Dashboard clinique + Gestion produits/catégories |
-| `admin` | Tout + Dashboard admin + Interface Django Admin |
-
----
-
-## 🚀 Fonctionnalités Partie 2
-
-### E-commerce
-- ✅ Catalogue produits avec catégories et filtres
-- ✅ Dates d'expiration avec alertes visuelles (⚠️ expire bientôt / ❌ expiré)
-- ✅ Gestion du stock avec décrément automatique
-- ✅ Panier (ajouter / modifier quantité / supprimer)
-- ✅ Checkout en 2 étapes (adresse + paiement)
-- ✅ Paiement OTP simulé en 3 étapes (adresse → carte → OTP)
-- ✅ Historique des commandes avec statuts
-- ✅ Génération de factures PDF professionnelles
-- ✅ Email de confirmation (Mailtrap)
-- ✅ Badge panier dynamique dans la Navbar
-
-### Dashboard Clinique
-- ✅ Stats produits (total, actifs, rupture, expirant)
-- ✅ Stats commandes (total, payées, chiffre d'affaires)
-- ✅ Top produits vendus avec barres de progression
-- ✅ Répartition catégories en donut SVG
-- ✅ Commandes récentes avec statuts
-- ✅ Alertes importantes (ruptures + expirations)
-- ✅ Gestion produits avec upload image
-- ✅ Gestion catégories avec slug auto-généré
-- ✅ Logo clinique (upload lors de l'inscription)
-
-### Dashboard Admin
-- ✅ KPIs réels (stock, ventes, revenus, utilisateurs)
-- ✅ Graphique barres des ventes mensuelles (Recharts)
-- ✅ Liste complète des utilisateurs avec recherche
-- ✅ Top produits vendus
-
-### Dashboard Client
-- ✅ Résumé commandes (total, payées, livrées, en attente)
-- ✅ Total dépensé
-- ✅ Historique commandes réel
-- ✅ Produits déjà achetés
-- ✅ Recommandations basées sur catalogue réel
-- ✅ Actions rapides
-
----
-
-## 📁 Structure des nouveaux fichiers (Partie 2)
+## Project structure
 
 ```
-medicamarket/
-├── products/                    # NOUVEAU
-│   ├── models.py                # Category, Product
-│   ├── serializers.py
-│   ├── views.py                 # Public + Clinique views
-│   ├── urls.py
-│   ├── permissions.py           # IsClinicOrAdmin
-│   └── admin.py
-├── orders/                      # NOUVEAU
-│   ├── models.py                # Cart, CartItem, Order, OrderItem
-│   ├── serializers.py
-│   ├── views.py
-│   ├── admin_views.py           # Stats admin
-│   ├── urls.py
-│   ├── emails.py                # Confirmation emails
-│   └── tasks.py
-├── payments/                    # NOUVEAU
-│   ├── views.py                 # OTP payment + invoice
-│   ├── urls.py
-│   └── invoice.py               # PDF generation (reportlab)
-├── users/                       # MODIFIÉ (Dev 1 base)
-│   └── models.py                # + clinic_logo field
-└── frontend/src/
-    ├── api/
-    │   ├── axiosInstance.js     # NOUVEAU (baseURL: /api)
-    │   ├── products.js          # NOUVEAU
-    │   ├── orders.js            # NOUVEAU
-    │   └── clinic.js            # NOUVEAU
-    ├── context/
-    │   └── CartContext.jsx      # NOUVEAU
-    ├── pages/
-    │   ├── ShopPage.jsx         # NOUVEAU
-    │   ├── ProductDetailPage.jsx # NOUVEAU
-    │   ├── CartPage.jsx         # NOUVEAU
-    │   ├── CheckoutPage.jsx     # NOUVEAU (OTP flow)
-    │   ├── OrdersPage.jsx       # NOUVEAU
-    │   ├── Dashboard.jsx        # MODIFIÉ (données réelles)
-    │   ├── DashboardClinique.jsx # MODIFIÉ (stats réelles)
-    │   ├── DashboardAdmin.jsx   # MODIFIÉ (données réelles)
-    │   ├── Profile.jsx          # MODIFIÉ (logo clinique)
-    │   ├── Register.jsx         # MODIFIÉ (upload logo)
-    │   ├── ClinicProductsPage.jsx # NOUVEAU
-    │   └── ClinicCategoriesPage.jsx # NOUVEAU
-    └── components/
-        ├── Navbar.jsx           # MODIFIÉ (panier badge + liens clinique)
-        └── ProductCard.jsx      # NOUVEAU
+.
+├── config/          # Django settings
+├── users/           # Authentication, roles, clinic profile
+├── products/        # Products, categories, stock, expiry dates
+├── orders/          # Cart, orders, confirmation emails, admin statistics
+├── payments/        # Simulated OTP payment, PDF invoices
+├── ai_features/     # AI features
+├── media/           # Uploaded and seed images
+├── frontend/        # React application (Vite)
+└── manage.py
 ```
 
----
+## Getting started
 
-## ⚠️ Points importants
+**Prerequisites:** Python 3.11+, Node.js 18+, XAMPP with MySQL running.
 
-| Problème connu | Solution |
-|----------------|----------|
-| Ne pas utiliser Django 5+ ou 6 | MariaDB 10.4 incompatible — rester sur **Django 4.2.7** |
-| Ne pas utiliser Tailwind v4 | Rester sur **Tailwind 3.4.0** |
-| Supprimer `import pymysql` de settings.py | Conflit avec mysqlclient |
-| Stripe non disponible en Tunisie | Utiliser la simulation OTP locale |
-| Images non affichées | Vérifier `MEDIA_URL` + `static()` dans `urls.py` |
+1. **Clone the project**
+   ```bash
+   git clone https://github.com/MaryemBourourou/medicamarket.git
+   cd medicamarket
+   ```
+2. **Database.** Start Apache and MySQL in XAMPP, open `http://localhost/phpmyadmin` and create a database named `medicamarket_db`.
+3. **Backend**
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate
+   pip install django==4.2.7 djangorestframework==3.14.0 djangorestframework-simplejwt==5.3.0 django-cors-headers==4.3.0 django-filter==23.3 mysqlclient Pillow reportlab python-dotenv requests
+   python manage.py migrate
+   python manage.py createsuperuser
+   python manage.py runserver
+   ```
+4. **Frontend**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+   The app is available at `http://localhost:5173` and the API at `http://localhost:8000`.
 
----
+## Configuration
 
-## 🧪 Données de test
+Secrets must not be committed. Create a `.env` file next to `manage.py` (see `.env.example`):
 
-Après `migrate` et `createsuperuser`, ajoute des données via **http://localhost:8000/admin** :
-
-1. **Categories** : Médicaments, Matériel médical, Vitamines
-2. **Products** : Doliprane 1000mg (prix: 3.5, stock: 100)
-3. **Users** : Créer un compte clinique via `/register`
-
----
-
-## 📝 Commandes utiles
-
-```bash
-# Migrations
-python manage.py makemigrations products orders payments
-python manage.py migrate
-
-# Superuser
-python manage.py createsuperuser
-
-# Lancer serveur
-python manage.py runserver
-
-# Frontend
-cd frontend && npm run dev
 ```
-
----
-
-## 🔗 Liens utiles
-
-- Django 4.2 docs : https://docs.djangoproject.com/en/4.2/
-- DRF docs : https://www.django-rest-framework.org/
-- Tailwind v3 : https://v3.tailwindcss.com/
-- Mailtrap : https://mailtrap.io
-- Recharts : https://recharts.org
-
----
-
-*Partie 2 réalisée par Marye — MedicaMarket 2026*
---- 
- Backend setup
-
-Open a terminal in the backend root (same level as manage.py).
-
-- Activate virtual environment
-
-Windows PowerShell:
-
-.\venv\Scripts\Activate.ps1
-### partie Asma Letaief
-- install these manually:
-
-pip install python-dotenv requests
-2. Create .env file in backend
-
-Create a file named:
-
-.env at the same level as manage.py.
-
-Example:
-
+SECRET_KEY=your-own-secret-key
+EMAIL_HOST_USER=your_mailtrap_username
+EMAIL_HOST_PASSWORD=your_mailtrap_password
 AI_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434/api
 OLLAMA_MODEL=llama3:8b
 AI_FALLBACK_ENABLED=true
 EXPIRY_ALERT_DAYS=30
+```
 
-3. Run Ollama
+Order confirmation emails use [Mailtrap](https://mailtrap.io) (optional). The AI features need [Ollama](https://ollama.com) running locally.
 
-- pour ajouter des produits automatique
-pip install requests
-pip install icrawler
-python manage.py seed_products_real_images
-*partie 3 rélisée par Asma Letaief*
+## API overview
+
+| Endpoint | Description |
+|---|---|
+| `/api/users/` | Authentication and users |
+| `/api/products/` | Products |
+| `/api/products/categories/` | Categories |
+| `/api/products/clinic/products/` | Clinic product management |
+| `/api/products/clinic/categories/` | Clinic category management |
+| `/api/orders/cart/` | Cart |
+| `/api/orders/checkout/` | Create an order |
+| `/api/orders/` | Order list |
+| `/api/orders/admin/stats/` | Admin statistics |
+| `/api/payments/initiate/` | Start an OTP payment |
+| `/api/payments/verify-otp/` | Verify the OTP |
+| `/api/payments/invoice/:id/` | Download a PDF invoice |
+
+## Known constraints
+
+- Stay on Django 4.2.7: newer versions are not compatible with MariaDB 10.4.
+- Stay on Tailwind CSS 3.4.0 (not v4).
+- Remove `import pymysql` from `settings.py` if present: it conflicts with `mysqlclient`.
+- Stripe is not available in Tunisia, so payment is a local OTP simulation.
+- If images do not display, check `MEDIA_URL` and the `static()` entry in `urls.py`.
+
+## Test data
+
+After migrating and creating a superuser, add data from `http://localhost:8000/admin`: a few categories (for example medicines, medical equipment, vitamins), some products, and create a clinic account through `/register`.
+
+## Credits
+
+Academic team project by Eya, Maryem Bourourou and Asma Letaief.
